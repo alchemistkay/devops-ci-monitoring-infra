@@ -9,7 +9,7 @@ terraform.tfstate.backup
 .terraform.lock.hcl
 
 # Variables files (to avoid exposing sensitive info)
-terraform.tfvars
+# terraform.tfvars
 *.auto.tfvars
 
 # Crash logs
