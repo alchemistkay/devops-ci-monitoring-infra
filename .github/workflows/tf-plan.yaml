@@ -20,7 +20,7 @@ env:
 
 jobs:
   plan:
-    if: github.repository != 'alchemistkay/django-devops-ci-cd'
+    if: github.repository != 'git@github.com:alchemistkay/django-devops-ci-cd.git'
     name: "Terraform Plan"
     runs-on: ubuntu-latest
     permissions:
