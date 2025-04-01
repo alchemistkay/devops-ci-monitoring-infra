@@ -23,6 +23,13 @@ jobs:
     if: github.repository != 'git@github.com:alchemistkay/django-devops-ci-cd.git'
     name: "Terraform Plan"
     runs-on: ubuntu-latest
+
+    defaults:
+     run:
+
+      shell: bash
+      # We keep Terraform files in the terraform directory.
+      working-directory: ./terraform/tf-ec2-jenkins
     
     permissions:
       # so GitHub can check out this repo using the default github.token
