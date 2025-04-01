@@ -1,0 +1,31 @@
+# Terraform state files
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.backup
+
+# Terraform lock files
+.terraform/
+.terraform.lock.hcl
+
+# Variables files (to avoid exposing sensitive info)
+terraform.tfvars
+*.auto.tfvars
+
+# Crash logs
+crash.log
+
+# Terraform plan files
+*.tfplan
+
+# Ignore provider override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore any generated SSH keys (if applicable)
+*.pem
+*.key
+
+requirements.txt

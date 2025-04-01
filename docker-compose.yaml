@@ -1,0 +1,83 @@
+# version: "3.9"
+services:
+  web:
+    image: alchemistkay/cloudapp-django-web:v1
+    container_name: cloudapp-django-web
+    # env_file: .env
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DJANGO_SETTINGS_MODULE=multitenant_saas_ecommerce.settings
+      - DJANGO_LOG_LEVEL=DEBUG
+      - ENV=local
+      - POSTGRES_NAME=DB2
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASS=postgres
+      - POSTGRES_HOST=cloudapp-django-postgresdb
+      - POSTGRES_PORT=5432  
+    command:
+      - /bin/sh
+      - -c
+      - |
+        python manage.py makemigrations
+        python manage.py migrate
+        python manage.py runserver 0.0.0.0:8585     
+    ports:
+      - "8585:8585"
+    # networks:
+    #   - web_network
+    volumes:
+       - appdata:/app
+    depends_on:
+      - cloudapp-django-postgresdb
+      # - redis 
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '0.001'
+    #       memory: 50M
+    #     reservations:
+    #       cpus: '0.0001'
+    #       memory: 20M 
+  cloudapp-django-postgresdb:
+    restart: always
+    image: postgres:latest
+    container_name: cloudapp-django-postgresdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=DB2
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=5432
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    expose:
+       - "5432"
+    ports:
+       - "5432:5432"
+    # networks:
+    #    - data_network   
+  pgadmin:
+        restart: always
+        image: dpage/pgadmin4
+        container_name: cloudapp-pgadmin 
+        depends_on:
+          - cloudapp-django-postgresdb
+        ports:
+          - "5051:80"
+        environment:
+          PGADMIN_DEFAULT_EMAIL: 1846.dev@protonmail.com
+          PGADMIN_DEFAULT_PASSWORD: postgres   
+          PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: 'False'
+          PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT: 'False'
+
+# networks:
+#   web_network:
+#     driver: bridge
+volumes:
+  pgdata:
+  # redisDB:
+  appdata:
+   driver: local
