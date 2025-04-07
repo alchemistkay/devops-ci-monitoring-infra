@@ -49,16 +49,15 @@
 
     - name: Download Jenkins GPG key
       get_url:
-        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
         dest: /usr/share/keyrings/jenkins.gpg
         mode: '0644'
 
     - name: Add Jenkins repo using signed-by
       apt_repository:
-        repo: "deb [signed-by=/usr/share/keyrings/jenkins.gpg] https://pkg.jenkins.io/debian-stable binary/"
+        repo: "deb [signed-by=/usr/share/keyrings/jenkins.gpg] https://pkg.jenkins.io/debian binary/"
         state: present
         filename: jenkins
-
 
     # - name: Add Jenkins APT key
     #   apt_key:
