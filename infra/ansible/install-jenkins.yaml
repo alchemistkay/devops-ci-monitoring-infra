@@ -47,15 +47,28 @@
         name: openjdk-11-jdk
         state: present
 
-    - name: Add Jenkins APT key
-      apt_key:
-        url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
-        state: present
+    - name: Download Jenkins GPG key
+      get_url:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        dest: /usr/share/keyrings/jenkins.gpg
+        mode: '0644'
 
-    - name: Add Jenkins APT repository
+    - name: Add Jenkins repo using signed-by
       apt_repository:
-        repo: deb https://pkg.jenkins.io/debian-stable binary/
+        repo: "deb [signed-by=/usr/share/keyrings/jenkins.gpg] https://pkg.jenkins.io/debian-stable binary/"
         state: present
+        filename: jenkins
+
+
+    # - name: Add Jenkins APT key
+    #   apt_key:
+    #     url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+    #     state: present
+
+    # - name: Add Jenkins APT repository
+    #   apt_repository:
+    #     repo: deb https://pkg.jenkins.io/debian-stable binary/
+    #     state: present
 
     - name: Install Jenkins
       apt:
