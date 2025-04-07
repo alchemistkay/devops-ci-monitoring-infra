@@ -16,13 +16,13 @@
 
     - name: Show EC2 public IP
       debug:
-        msg: "EC2 Public IP is {{ ec2_result.instances[0].public_ip_address }}"
+        msg: "EC2 Public IP is {{ ec2_info.instances[0].public_ip_address }}"
 
 
     - name: Ensure EC2 public IP is present
       fail:
         msg: "No EC2 instance public IP found!"
-      when: ec2_result.instances[0].public_ip_address is not defined
+      when: ec2_info.instances[0].public_ip_address is not defined
 
 
     - name: Set dynamic host for Jenkins
