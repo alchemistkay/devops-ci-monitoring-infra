@@ -11,7 +11,7 @@ env:
   TF_CLOUD_ORGANIZATION: "k4scloud"
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
   TF_WORKSPACE: "jenkins-infra"
-  CONFIG_DIRECTORY: "./terraform/tf-ec2-jenkins"
+  CONFIG_DIRECTORY: "./infra/terraform/"
 
 
 jobs:
@@ -50,4 +50,3 @@ jobs:
       - name: Notify User to Manually Trigger Ansible Workflow
         run: |
           echo "Terraform Apply Complete."
-          echo "Retrieve the EC2 Public IP from Terraform Cloud and trigger the Ansible workflow manually."
