@@ -43,7 +43,9 @@
         set -e
         echo "🚀 Updating packages..."
         apt-get update -y
-        apt-get install -y openjdk-11-jdk zip make curl gnupg2 software-properties-common
+
+        echo "📦 Installing Java 17 and tools..."
+        apt-get install -y openjdk-17-jdk zip make curl gnupg2 software-properties-common
 
         echo "✅ Java installed:"
         java -version
@@ -65,6 +67,26 @@
         cat /var/lib/jenkins/secrets/initialAdminPassword || echo "Password file not found (Jenkins might not have started yet)"
       args:
         executable: /bin/bash
+
+    - name: Start and enable Jenkins
+      systemd:
+        name: jenkins
+        state: started
+        enabled: yes
+
+    - name: Wait for Jenkins to start
+      wait_for:
+        port: 8080
+        timeout: 30
+
+    - name: Output Jenkins Initial Admin Password
+      slurp:
+        src: /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_pwd
+
+    - name: Show Jenkins Initial Admin Password
+      debug:
+        msg: "Initial Jenkins Admin Password: {{ jenkins_pwd.content | b64decode }}"
 
 
 # - name: Install Jenkins and Dependencies
