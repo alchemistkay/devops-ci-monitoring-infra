@@ -15,8 +15,10 @@
       register: ec2_info
 
     - name: Set dynamic host for Jenkins
+      debug:
+        msg: "Initial Jenkins ec2_info: {{ec2_info}}"
       add_host:
-        name: jenkins_node
+        name: "{{ item.public_ip_address }}"
         ansible_host: "{{ ec2_info.instances[0].public_ip_address }}"
         ansible_user: ubuntu
         ansible_ssh_private_key_file: ~/.ssh/jenkins-key.pem
