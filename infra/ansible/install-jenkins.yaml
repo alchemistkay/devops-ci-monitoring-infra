@@ -1,0 +1,88 @@
+---
+- name: Get EC2 Jenkins Instance Info
+  hosts: localhost
+  gather_facts: false
+  vars:
+    aws_region: "{{ lookup('env', 'AWS_REGION') | default('eu-west-2') }}"
+  tasks:
+    - name: Get public IP address of EC2 instance with tag Name=jenkins-server
+      amazon.aws.ec2_instance_info:
+        region: "{{ aws_region }}"
+        filters:
+          "tag:Name": "jenkins-server"
+          instance-state-name: "running"
+      register: ec2_info
+
+    - name: Set dynamic host for Jenkins
+      add_host:
+        name: jenkins_node
+        ansible_host: "{{ ec2_info.instances[0].public_ip_address }}"
+        ansible_user: ubuntu
+        ansible_ssh_private_key_file: ~/.ssh/jenkins-key.pem
+
+- name: Install Jenkins and Dependencies
+  hosts: jenkins_node
+  become: true
+  tasks:
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Java (OpenJDK 11)
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Add Jenkins APT key
+      apt_key:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+        state: present
+
+    - name: Add Jenkins APT repository
+      apt_repository:
+        repo: deb https://pkg.jenkins.io/debian-stable binary/
+        state: present
+
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        update_cache: yes
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install dependencies for Node.js
+      apt:
+        name: [curl, gnupg, ca-certificates]
+        state: present
+
+    - name: Install Node.js and npm
+      shell: |
+        curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+        apt-get install -y nodejs
+      args:
+        executable: /bin/bash
+
+    - name: Start and Enable Jenkins
+      systemd:
+        name: jenkins
+        enabled: true
+        state: started
+
+    - name: Wait for Jenkins to initialize
+      wait_for:
+        port: 8080
+        timeout: 60
+
+    - name: Retrieve Jenkins Admin Password
+      slurp:
+        src: /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_pass
+
+    - name: Show Jenkins Admin Password
+      debug:
+        msg: "Jenkins Admin Password: {{ jenkins_pass.content | b64decode }}"
