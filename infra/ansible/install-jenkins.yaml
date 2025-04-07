@@ -1,8 +1,9 @@
 ---
 - name: Get EC2 Jenkins Instance Info
-  hosts: localhost
+  hosts: all
   gather_facts: false
   vars:
+    ansible_python_interpreter: /usr/bin/python3
     aws_region: "{{ lookup('env', 'AWS_REGION') | default('eu-west-2') }}"
   tasks:
     - name: Get public IP address of EC2 instance with tag Name=jenkins-server
