@@ -33,102 +33,136 @@
         ansible_ssh_private_key_file: ~/.ssh/jenkins-key.pem
         groups: jenkins
 
-- name: Install Jenkins and Dependencies
+
+- name: Install Jenkins via Shell Script
   hosts: jenkins
-  become: true
+  become: yes
   tasks:
-    - name: Update apt packages
-      apt:
-        update_cache: yes
-        # cache_valid_time: 3600
-
-    - name: Install Java (OpenJDK 11)
-      apt:
-        name: openjdk-11-jdk
-        state: present
-
-    # - name: Import Jenkins GPG key
-    #   ansible.builtin.apt_key:
-    #     url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-    #     keyring: /usr/share/keyrings/jenkins.gpg
-    #     state: present
-
-    # - name: Add Jenkins repository with signed-by
-    #   ansible.builtin.apt_repository:
-    #     repo: "deb [signed-by=/usr/share/keyrings/jenkins.gpg] https://pkg.jenkins.io/debian-stable binary/"
-    #     state: present
-    #     filename: jenkins
-
-    # - name: Update apt cache
-    #   ansible.builtin.apt:
-    #     update_cache: yes
-
-
-    # - name: Download Jenkins GPG key
-    #   get_url:
-    #     url: https://pkg.jenkins.io/debian/jenkins.io.key
-    #     dest: /usr/share/keyrings/jenkins.gpg
-    #     mode: '0644'
-
-    # - name: Add Jenkins repo using signed-by
-    #   apt_repository:
-    #     repo: "deb [signed-by=/usr/share/keyrings/jenkins.gpg] https://pkg.jenkins.io/debian binary/"
-    #     state: present
-    #     filename: jenkins
-
-    - name: Add Jenkins APT key
-      apt_key:
-        url: https://pkg.jenkins.io/debian/jenkins.io.key
-        state: present
-
-    - name: Add Jenkins APT repository
-      apt_repository:
-        repo: deb http://pkg.jenkins.io/debian-stable binary/
-        state: present
-
-    - name: Update apt package index after adding Jenkins repo
-      apt:
-        update_cache: yes
-
-    - name: Install Jenkins
-      apt:
-        name: jenkins
-        update_cache: yes
-        state: present
-
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
-
-    - name: Install dependencies for Node.js
-      apt:
-        name: [curl, gnupg, ca-certificates]
-        state: present
-
-    - name: Install Node.js and npm
+    - name: Run Jenkins installation script
       shell: |
-        curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-        apt-get install -y nodejs
+        set -e
+        echo "🚀 Updating packages..."
+        apt-get update -y
+        apt-get install -y openjdk-11-jdk zip make curl gnupg2 software-properties-common
+
+        echo "✅ Java installed:"
+        java -version
+
+        echo "🔑 Adding Jenkins GPG key..."
+        curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+        echo "📦 Adding Jenkins repository..."
+        echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+        echo "🔄 Updating package list..."
+        apt-get update -y
+
+        echo "🧱 Installing Jenkins..."
+        apt-get install -y jenkins
+
+        echo "✅ Jenkins installed successfully!"
+        echo "🔐 Initial Admin Password:"
+        cat /var/lib/jenkins/secrets/initialAdminPassword || echo "Password file not found (Jenkins might not have started yet)"
       args:
         executable: /bin/bash
 
-    - name: Start and Enable Jenkins
-      systemd:
-        name: jenkins
-        enabled: true
-        state: started
 
-    - name: Wait for Jenkins to initialize
-      wait_for:
-        port: 8080
-        timeout: 60
+# - name: Install Jenkins and Dependencies
+#   hosts: jenkins
+#   become: true
+#   tasks:
+#     - name: Update apt packages
+#       apt:
+#         update_cache: yes
+#         # cache_valid_time: 3600
 
-    - name: Retrieve Jenkins Admin Password
-      slurp:
-        src: /var/lib/jenkins/secrets/initialAdminPassword
-      register: jenkins_pass
+#     - name: Install Java (OpenJDK 11)
+#       apt:
+#         name: openjdk-11-jdk
+#         state: present
 
-    - name: Show Jenkins Admin Password
-      debug:
-        msg: "Jenkins Admin Password: {{ jenkins_pass.content | b64decode }}"
+#     - name: Import Jenkins GPG key
+#       ansible.builtin.apt_key:
+#         url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+#         keyring: /usr/share/keyrings/jenkins.gpg
+#         state: present
+
+#     - name: Add Jenkins repository with signed-by
+#       ansible.builtin.apt_repository:
+#         repo: "deb [signed-by=/usr/share/keyrings/jenkins.gpg] https://pkg.jenkins.io/debian-stable binary/"
+#         state: present
+#         filename: jenkins
+
+#     - name: Update apt cache
+#       ansible.builtin.apt:
+#         update_cache: yes
+
+
+#     - name: Download Jenkins GPG key
+#       get_url:
+#         url: https://pkg.jenkins.io/debian/jenkins.io.key
+#         dest: /usr/share/keyrings/jenkins.gpg
+#         mode: '0644'
+
+#     - name: Add Jenkins repo using signed-by
+#       apt_repository:
+#         repo: "deb [signed-by=/usr/share/keyrings/jenkins.gpg] https://pkg.jenkins.io/debian binary/"
+#         state: present
+#         filename: jenkins
+
+#     - name: Add Jenkins APT key
+#       apt_key:
+#         url: https://pkg.jenkins.io/debian/jenkins.io.key
+#         state: present
+
+#     - name: Add Jenkins APT repository
+#       apt_repository:
+#         repo: deb http://pkg.jenkins.io/debian-stable binary/
+#         state: present
+
+#     - name: Update apt package index after adding Jenkins repo
+#       apt:
+#         update_cache: yes
+
+#     - name: Install Jenkins
+#       apt:
+#         name: jenkins
+#         update_cache: yes
+#         state: present
+
+#     - name: Install Docker
+#       apt:
+#         name: docker.io
+#         state: present
+
+#     - name: Install dependencies for Node.js
+#       apt:
+#         name: [curl, gnupg, ca-certificates]
+#         state: present
+
+#     - name: Install Node.js and npm
+#       shell: |
+#         curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+#         apt-get install -y nodejs
+#       args:
+#         executable: /bin/bash
+
+#     - name: Start and Enable Jenkins
+#       systemd:
+#         name: jenkins
+#         enabled: true
+#         state: started
+
+#     - name: Wait for Jenkins to initialize
+#       wait_for:
+#         port: 8080
+#         timeout: 60
+
+#     - name: Retrieve Jenkins Admin Password
+#       slurp:
+#         src: /var/lib/jenkins/secrets/initialAdminPassword
+#       register: jenkins_pass
+
+#     - name: Show Jenkins Admin Password
+#       debug:
+#         msg: "Jenkins Admin Password: {{ jenkins_pass.content | b64decode }}"
