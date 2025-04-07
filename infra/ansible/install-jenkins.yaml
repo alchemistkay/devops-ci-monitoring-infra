@@ -14,14 +14,19 @@
           instance-state-name: "running"
       register: ec2_info
 
+    - name: Ensure EC2 public IP is present
+      fail:
+        msg: "No EC2 instance public IP found!"
+      when: ec2_result.instances[0].public_ip_address is not defined
+
+
     - name: Set dynamic host for Jenkins
-      debug:
-        msg: "Initial Jenkins ec2_info: {{ec2_info}}"
       add_host:
-        name: "{{ item.public_ip_address }}"
+        name: jenkins_node
         ansible_host: "{{ ec2_info.instances[0].public_ip_address }}"
         ansible_user: ubuntu
-        ansible_ssh_private_key_file: ~/.ssh/jenkins-key.pem
+        ansible_ssh_private_key_file: ~/.ssh/id_rsa
+        groups: jenkins
 
 - name: Install Jenkins and Dependencies
   hosts: jenkins
