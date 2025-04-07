@@ -40,28 +40,28 @@
     - name: Update apt packages
       apt:
         update_cache: yes
-        cache_valid_time: 3600
+        # cache_valid_time: 3600
 
     - name: Install Java (OpenJDK 11)
       apt:
         name: openjdk-11-jdk
         state: present
 
-    - name: Import Jenkins GPG key
-      ansible.builtin.apt_key:
-        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-        keyring: /usr/share/keyrings/jenkins.gpg
-        state: present
+    # - name: Import Jenkins GPG key
+    #   ansible.builtin.apt_key:
+    #     url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+    #     keyring: /usr/share/keyrings/jenkins.gpg
+    #     state: present
 
-    - name: Add Jenkins repository with signed-by
-      ansible.builtin.apt_repository:
-        repo: "deb [signed-by=/usr/share/keyrings/jenkins.gpg] https://pkg.jenkins.io/debian-stable binary/"
-        state: present
-        filename: jenkins
+    # - name: Add Jenkins repository with signed-by
+    #   ansible.builtin.apt_repository:
+    #     repo: "deb [signed-by=/usr/share/keyrings/jenkins.gpg] https://pkg.jenkins.io/debian-stable binary/"
+    #     state: present
+    #     filename: jenkins
 
-    - name: Update apt cache
-      ansible.builtin.apt:
-        update_cache: yes
+    # - name: Update apt cache
+    #   ansible.builtin.apt:
+    #     update_cache: yes
 
 
     # - name: Download Jenkins GPG key
@@ -76,15 +76,19 @@
     #     state: present
     #     filename: jenkins
 
-    # - name: Add Jenkins APT key
-    #   apt_key:
-    #     url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
-    #     state: present
+    - name: Add Jenkins APT key
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
+        state: present
 
-    # - name: Add Jenkins APT repository
-    #   apt_repository:
-    #     repo: deb https://pkg.jenkins.io/debian-stable binary/
-    #     state: present
+    - name: Add Jenkins APT repository
+      apt_repository:
+        repo: deb http://pkg.jenkins.io/debian-stable binary/
+        state: present
+
+    - name: Update apt package index after adding Jenkins repo
+      apt:
+        update_cache: yes
 
     - name: Install Jenkins
       apt:
