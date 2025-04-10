@@ -3,6 +3,7 @@
   hosts: localhost
   gather_facts: false
   vars:
+    ansible_python_interpreter: /usr/bin/python3
     aws_region: "{{ lookup('env', 'AWS_REGION') | default('eu-west-2') }}"
   tasks:
     - name: Get public IP address of EC2 instance with tag Name=jenkins-server
@@ -13,76 +14,139 @@
           instance-state-name: "running"
       register: ec2_info
 
+    - name: Show EC2 public IP
+      debug:
+        msg: "EC2 Public IP is {{ ec2_info.instances[0].public_ip_address }}"
+
+
+    - name: Ensure EC2 public IP is present
+      fail:
+        msg: "No EC2 instance public IP found!"
+      when: ec2_info.instances[0].public_ip_address is not defined
+
+
     - name: Set dynamic host for Jenkins
       add_host:
         name: jenkins_node
         ansible_host: "{{ ec2_info.instances[0].public_ip_address }}"
         ansible_user: ubuntu
         ansible_ssh_private_key_file: ~/.ssh/jenkins-key.pem
+        groups: jenkins
 
-- name: Install Jenkins and Dependencies
-  hosts: jenkins_node
-  become: true
+
+- name: Install Jenkins via Shell Script
+  hosts: jenkins
+  become: yes
   tasks:
-    - name: Update apt packages
+    - name: Run Jenkins installation script
+      shell: |
+        set -e
+        echo "🚀 Updating packages..."
+        apt-get update -y
+
+        echo "📦 Installing Java 17 and tools..."
+        apt-get install -y openjdk-17-jdk zip make curl gnupg2 software-properties-common
+
+        echo "✅ Java installed:"
+        java -version
+
+        echo "🔑 Adding Jenkins GPG key..."
+        curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+        echo "📦 Adding Jenkins repository..."
+        echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+        echo "🔄 Updating package list..."
+        apt-get update -y
+
+        echo "🧱 Installing Jenkins..."
+        apt-get install -y jenkins
+
+        echo "✅ Jenkins installed successfully!"
+        echo "🔐 Initial Admin Password:"
+        cat /var/lib/jenkins/secrets/initialAdminPassword || echo "Password file not found (Jenkins might not have started yet)"
+      args:
+        executable: /bin/bash
+
+    - name: Start and enable Jenkins
+      systemd:
+        name: jenkins
+        state: started
+        enabled: yes
+
+    - name: Wait for Jenkins to start
+      wait_for:
+        port: 8080
+        timeout: 30
+
+    - name: Output Jenkins Initial Admin Password
+      slurp:
+        src: /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_pwd
+
+    - name: Show Jenkins Initial Admin Password
+      debug:
+        msg: "Initial Jenkins Admin Password: {{ jenkins_pwd.content | b64decode }}"
+
+
+- name: Install Jenkins and Docker (Best Practice)
+  hosts: jenkins
+  become: yes
+  tasks:
+    - name: Install required packages
       apt:
+        name:
+          - openjdk-17-jdk
+          - zip
+          - make
+          - curl
+          - gnupg2
+          - software-properties-common
+        state: present
         update_cache: yes
-        cache_valid_time: 3600
 
-    - name: Install Java (OpenJDK 11)
-      apt:
-        name: openjdk-11-jdk
-        state: present
+    - name: Install Docker
+      shell: |
+        curl -fsSL https://get.docker.com | sh
+      args:
+        executable: /bin/bash
 
-    - name: Add Jenkins APT key
-      apt_key:
-        url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
-        state: present
+    - name: Add Jenkins GPG key
+      shell: |
+        curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+      args:
+        executable: /bin/bash
 
-    - name: Add Jenkins APT repository
-      apt_repository:
-        repo: deb https://pkg.jenkins.io/debian-stable binary/
-        state: present
+    - name: Add Jenkins repository
+      shell: |
+        echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+      args:
+        executable: /bin/bash
 
     - name: Install Jenkins
       apt:
         name: jenkins
+        state: present
         update_cache: yes
-        state: present
 
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
+    - name: Add Jenkins user to docker group
+      user:
+        name: jenkins
+        groups: docker
+        append: yes
 
-    - name: Install dependencies for Node.js
-      apt:
-        name: [curl, gnupg, ca-certificates]
-        state: present
-
-    - name: Install Node.js and npm
-      shell: |
-        curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-        apt-get install -y nodejs
-      args:
-        executable: /bin/bash
-
-    - name: Start and Enable Jenkins
+    - name: Restart Jenkins to apply group membership
       systemd:
         name: jenkins
+        state: restarted
         enabled: true
-        state: started
 
-    - name: Wait for Jenkins to initialize
-      wait_for:
-        port: 8080
-        timeout: 60
+    - name: Print initial admin password
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: admin_password
+      ignore_errors: yes
 
-    - name: Retrieve Jenkins Admin Password
-      slurp:
-        src: /var/lib/jenkins/secrets/initialAdminPassword
-      register: jenkins_pass
-
-    - name: Show Jenkins Admin Password
+    - name: Show Jenkins admin password
       debug:
-        msg: "Jenkins Admin Password: {{ jenkins_pass.content | b64decode }}"
+        msg: "{{ admin_password.stdout | default('Password not found or Jenkins not started yet') }}"
+

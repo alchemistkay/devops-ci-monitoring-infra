@@ -1,5 +1,5 @@
 # Security Group for Jenkins EC2
-resource "aws_security_group" "jenkins_sg" {
+resource "aws_security_group" "ci_stack_sg" {
   name        = "jenkins-security-group"
   description = "Allow SSH and HTTP access for Jenkins"
   vpc_id      = var.vpc_id
@@ -20,6 +20,14 @@ resource "aws_security_group" "jenkins_sg" {
     cidr_blocks = ["0.0.0.0/0"]  # Restrict to trusted IPs for security
   }
 
+  ingress {
+    description = "SonarQube UI access"
+    from_port   = 9000
+    to_port     = 9000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Restrict to trusted IPs for security
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -29,14 +37,15 @@ resource "aws_security_group" "jenkins_sg" {
 }
 
 # Jenkins EC2 Instance
-resource "aws_instance" "jenkins" {
+resource "aws_instance" "ci_stack" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
   key_name               = var.key_name
   subnet_id              = var.public_subnet_id  # Deploy to the first public subnet
-  vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
+  vpc_security_group_ids = [aws_security_group.ci_stack_sg.id]
+  associate_public_ip_address = true
 
   tags = {
-    Name = "jenkins-server"
+    Name = "ci-stack-server"
   }
 }
