@@ -19,8 +19,8 @@
 
 - name: Copy docker-compose file
   template:
-    src: docker-compose.yml.j2
-    dest: /opt/ci/docker-compose.yml
+    src: docker-compose.yaml.j2
+    dest: /opt/ci/docker-compose.yaml
     mode: '0644'
 
 - name: Copy NGINX config
