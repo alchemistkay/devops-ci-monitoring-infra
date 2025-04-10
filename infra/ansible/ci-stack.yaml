@@ -6,11 +6,11 @@
     ansible_python_interpreter: /usr/bin/python3
     aws_region: "{{ lookup('env', 'AWS_REGION') | default('eu-west-2') }}"
   tasks:
-    - name: Get public IP address of EC2 instance with tag Name=jenkins-server
+    - name: Get public IP address of EC2 instance with tag Name=ci-stack-server
       amazon.aws.ec2_instance_info:
         region: "{{ aws_region }}"
         filters:
-          "tag:Name": "jenkins-server"
+          "tag:Name": "ci-stack-server"
           instance-state-name: "running"
       register: ec2_info
 
