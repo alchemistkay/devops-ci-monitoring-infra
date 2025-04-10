@@ -17,7 +17,7 @@ availability_zones = ["eu-west-2a", "eu-west-2b"]
 
 # EC2 Instance Details
 ami_id         = "ami-04da26f654d3383cf"  # Example Amazon Linux AMI
-instance_type  = "t2.micro"
+instance_type  = "t3.medium"
 key_name       = "k4scloud-ec2-keypair-1"  # Ensure this key exists in AWS
 
 # Security Group Ingress CIDRs (Restrict to trusted IPs for security)

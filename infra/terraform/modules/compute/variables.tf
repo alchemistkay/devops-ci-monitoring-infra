@@ -1,31 +1,27 @@
 variable ami_id {
   type        = string
-  default     = ""
-  description = "description"
+  description = "AMI ID for the EC2 instance"
 }
 
 variable instance_type {
   type        = string
-  default     = ""
-  description = "description"
+  default     = "t3.medium"
+  description = "ec2 instance type"
 }
 
 variable key_name {
-  type        = string
-  default     = ""
-  description = "description"
+  default = ""
+  description = "SSH key pair name"
 }
 
 variable vpc_id {
   type        = string
-  default     = ""
-  description = "description"
+  description = "vpc id"
 }
 
 variable public_subnet_id {
   type        = string
-  default     = ""
-  description = "description"
+  description = "Public subnet ID"
 }
 
 

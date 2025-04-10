@@ -1,0 +1,42 @@
+---
+- name: Get EC2 Jenkins Instance Info
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    aws_region: "{{ lookup('env', 'AWS_REGION') | default('eu-west-2') }}"
+  tasks:
+    - name: Get public IP address of EC2 instance with tag Name=jenkins-server
+      amazon.aws.ec2_instance_info:
+        region: "{{ aws_region }}"
+        filters:
+          "tag:Name": "jenkins-server"
+          instance-state-name: "running"
+      register: ec2_info
+
+    - name: Show EC2 public IP
+      debug:
+        msg: "EC2 Public IP is {{ ec2_info.instances[0].public_ip_address }}"
+
+
+    - name: Ensure EC2 public IP is present
+      fail:
+        msg: "No EC2 instance public IP found!"
+      when: ec2_info.instances[0].public_ip_address is not defined
+
+
+    - name: Set dynamic host for Jenkins
+      add_host:
+        name: jenkins_node
+        ansible_host: "{{ ec2_info.instances[0].public_ip_address }}"
+        ansible_user: ubuntu
+        ansible_ssh_private_key_file: ~/.ssh/jenkins-key.pem
+        groups: jenkins
+
+
+- name: Provision CI stack with Docker Compose and NGINX
+  hosts: jenkins
+  become: yes
+
+  roles:
+    - ci_stack

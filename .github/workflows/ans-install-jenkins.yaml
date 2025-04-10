@@ -36,4 +36,4 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Run Ansible Playbook to Install Jenkins
-        run: ansible-playbook infra/ansible/install-jenkins.yaml
+        run: ansible-playbook infra/ansible/ci-stack.yaml
