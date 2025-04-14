@@ -1,0 +1,46 @@
+jenkins:
+  systemMessage: "Jenkins provisioned via JCasC"
+  numExecutors: 2
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: {{ jenkins_admin_user }}
+          password: {{ jenkins_admin_password }}
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+unclassified:
+  location:
+    adminAddress: "admin@k4scloud.com"
+    url: "http://localhost:{{ jenkins_port }}"
+
+  prometheusConfiguration:
+    useAuthenticatedEndpoint: false
+    collectDiskUsage: true
+    jobAttributeName: "job"
+    folderAttributeName: "folder"
+    computerAttributeName: "node"
+    includeBuildMetrics: true
+    includeTestMetrics: true
+
+tool:
+  git:
+    installations:
+      - name: "Default"
+        home: "/usr/bin/git"
+
+plugins:
+  required:
+    - name: git
+    - name: github
+    - name: workflow-aggregator
+    - name: pipeline-stage-view
+    - name: blueocean
+    - name: docker-plugin
+    - name: docker-workflow
+    - name: credentials-binding
+    - name: hashicorp-vault-plugin
+    - name: sonar
+    - name: prometheus

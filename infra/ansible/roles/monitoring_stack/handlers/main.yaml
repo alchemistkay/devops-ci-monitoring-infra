@@ -1,0 +1,8 @@
+---
+- name: Restart Prometheus
+  ansible.builtin.shell: docker restart prometheus
+  listen: "restart prometheus"
+
+- name: Restart Monitoring Stack
+  ansible.builtin.shell: docker compose -f /opt/monitoring/docker-compose.yml restart
+  listen: "restart monitoring stack"

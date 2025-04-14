@@ -1,0 +1,7 @@
+jenkins_port: 8080
+jenkins_admin_user: admin
+jenkins_admin_password: admin123  # You might want to vault this in production
+sonarqube_port: 9000
+sonar_db_name: sonar
+sonar_db_user: sonar
+sonar_db_password: sonarpass

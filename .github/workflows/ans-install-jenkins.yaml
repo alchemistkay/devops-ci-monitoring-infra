@@ -16,8 +16,8 @@ jobs:
       - name: Set up SSH Key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/jenkins-key.pem
-          chmod 600 ~/.ssh/jenkins-key.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/k4scloud-key.pem
+          chmod 600 ~/.ssh/k4scloud-key.pem
 
       - name: Disable Ansible Host Key Checking
         run: echo "ANSIBLE_HOST_KEY_CHECKING=False" >> $GITHUB_ENV
@@ -36,4 +36,4 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Run Ansible Playbook to Install Jenkins
-        run: ansible-playbook infra/ansible/ci-stack.yaml
+        run: ansible-playbook infra/ansible/playbooks/main.yaml

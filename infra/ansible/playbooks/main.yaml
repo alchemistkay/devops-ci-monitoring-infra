@@ -1,5 +1,5 @@
 ---
-- name: Get EC2 Jenkins Instance Info
+- name: Get EC2 CI/Monitoring Stack Instance Info
   hosts: localhost
   gather_facts: false
   vars:
@@ -25,18 +25,19 @@
       when: ec2_info.instances[0].public_ip_address is not defined
 
 
-    - name: Set dynamic host for Jenkins
+    - name: Set dynamic host for CI/MonitoringMonitoring Stack
       add_host:
-        name: jenkins_node
+        name: ci_monitoring_stack_node
         ansible_host: "{{ ec2_info.instances[0].public_ip_address }}"
         ansible_user: ubuntu
         ansible_ssh_private_key_file: ~/.ssh/jenkins-key.pem
-        groups: jenkins
+        groups: ci_monitoring_nodes
+
+    - name: Set EC2 IP fact
+      set_fact:
+        ci_ec2_public_ip: "{{ ec2_info.instances[0].public_ip_address }}"
 
 
-- name: Provision CI stack with Docker Compose and NGINX
-  hosts: jenkins
-  become: yes
 
-  roles:
-    - ci_stack
+- import_playbook: setup-ci.yaml
+- import_playbook: setup-monitoring.yaml

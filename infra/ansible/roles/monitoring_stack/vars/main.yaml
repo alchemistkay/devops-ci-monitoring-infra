@@ -1,0 +1,3 @@
+slack_webhook_url: ''
+# ci_ec2_public_ip: "{{ hostvars['localhost'].ec2_info.instances[0].public_ip_address }}"
+

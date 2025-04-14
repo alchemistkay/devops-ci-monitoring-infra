@@ -1,0 +1,5 @@
+# infra/ansible/roles/ci_stack/handlers/main.yml
+- name: Restart CI stack
+  shell: docker-compose down && docker-compose up -d
+  args:
+    chdir: /opt/ci
