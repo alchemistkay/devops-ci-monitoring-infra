@@ -1,4 +1,4 @@
-name: "Provision Jenkins with Ansible"
+name: "Provision CI/Monitoring Stack with Ansible"
 
 on:
   workflow_dispatch:
