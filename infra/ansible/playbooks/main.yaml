@@ -38,6 +38,6 @@
         ci_ec2_public_ip: "{{ ec2_info.instances[0].public_ip_address }}"
 
 
-
+- import_playbook: setup-prereqs.yaml
 - import_playbook: setup-ci.yaml
 - import_playbook: setup-monitoring.yaml
