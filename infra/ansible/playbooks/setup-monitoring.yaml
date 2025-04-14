@@ -36,7 +36,9 @@
 - name: Set up Monitoring stack
   hosts: ci_monitoring_nodes
   become: true
+  vars:
+    ci_ec2_public_ip: "{{ hostvars['localhost']['ec2_info'].instances[0].public_ip_address }}"
   roles:
     - role: monitoring_stack
-      vars:
-        ci_ec2_public_ip: "{{ ci_ec2_public_ip }}"
+      # vars:
+      #   ci_ec2_public_ip: "{{ ci_ec2_public_ip }}"
