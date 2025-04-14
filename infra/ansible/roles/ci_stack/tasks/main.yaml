@@ -33,3 +33,17 @@
   shell: docker-compose up -d
   args:
     chdir: /opt/ci
+
+- name: Create JCasC config directory
+  file:
+    path: /opt/ci/jenkins/casc_configs
+    state: directory
+    recurse: true
+
+- name: Copy Jenkins JCasC config
+  template:
+    src: jenkins.yaml.j2
+    dest: /opt/ci/jenkins/casc_configs/jenkins.yaml
+    mode: '0644'
+  notify: Restart CI stack
+

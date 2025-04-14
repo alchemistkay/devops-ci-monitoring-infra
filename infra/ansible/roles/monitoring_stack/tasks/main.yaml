@@ -1,0 +1,26 @@
+- name: Fail if ec2 IP is not provided
+  fail:
+    msg: "ci_ec2_public_ip must be set to configure Jenkins Prometheus target."
+  when: ci_ec2_public_ip is not defined
+
+- name: Create Prometheus configuration
+  template:
+    src: prometheus.yaml.j2
+    dest: /opt/monitoring/prometheus/prometheus.yaml
+  vars:
+    ci_ec2_public_ip: "{{ ci_ec2_public_ip }}"
+
+- name: Create Alert Manager configuration
+  template:
+    src: alertmanager.yaml.j2
+    dest: /opt/monitoring/alertmanager/alertmanager.yaml
+
+- name: Deploy monitoring stack with Docker Compose
+  template:
+    src: docker-compose.yaml.j2
+    dest: /opt/monitoring/docker-compose.yaml
+
+- name: Launch monitoring stack
+  community.docker.docker_compose:
+    project_src: /opt/monitoring
+    state: present

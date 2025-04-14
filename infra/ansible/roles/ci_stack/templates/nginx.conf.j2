@@ -12,6 +12,10 @@ http {
       proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+    location /jenkins/prometheus {
+      proxy_pass http://jenkins:8080/prometheus;
+    }
+
     location /sonarqube/ {
       proxy_pass http://sonarqube:9000/;
       proxy_set_header Host $host;
