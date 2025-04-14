@@ -29,10 +29,16 @@
     dest: /opt/ci/nginx.conf
     mode: '0644'
 
-- name: Start containers
-  shell: docker-compose up -d
-  args:
-    chdir: /opt/ci
+# - name: Start containers
+#   shell: docker-compose up -d
+#   args:
+#     chdir: /opt/ci
+
+- name: Start CI containers with Docker Compose 
+  community.docker.docker_compose_v2:
+    project_src: /opt/ci
+    state: present
+
 
 - name: Create JCasC config directory
   file:
