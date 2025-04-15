@@ -1,0 +1,12 @@
+git
+github
+workflow-aggregator
+pipeline-stage-view
+blueocean
+docker-plugin
+docker-workflow
+credentials-binding
+hashicorp-vault-plugin
+sonar
+prometheus
+configuration-as-code

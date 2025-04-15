@@ -29,16 +29,28 @@
     dest: /opt/ci/nginx.conf
     mode: '0644'
 
-# - name: Start containers
-#   shell: docker-compose up -d
-#   args:
-#     chdir: /opt/ci
+- name: Create Jenkins build context
+  file:
+    path: /opt/ci/jenkins
+    state: directory
+    recurse: true
 
-- name: Start CI containers with Docker Compose 
-  community.docker.docker_compose_v2:
-    project_src: /opt/ci
-    state: present
+- name: Copy plugins.txt
+  copy:
+    src: plugins.txt
+    dest: /opt/ci/jenkins/plugins.txt
 
+- name: Copy Dockerfile template
+  template:
+    src: Dockerfile.j2
+    dest: /opt/ci/jenkins/Dockerfile
+
+- name: Build custom Jenkins image
+  community.docker.docker_image:
+    build:
+      path: /opt/ci/jenkins
+    name: custom-jenkins
+    tag: latest
 
 - name: Create JCasC config directory
   file:
@@ -52,4 +64,15 @@
     dest: /opt/ci/jenkins/casc_configs/jenkins.yaml
     mode: '0644'
   notify: Restart CI stack
+
+# - name: Start containers
+#   shell: docker-compose up -d
+#   args:
+#     chdir: /opt/ci
+
+- name: Start CI containers with Docker Compose 
+  community.docker.docker_compose_v2:
+    project_src: /opt/ci
+    state: present
+
 
