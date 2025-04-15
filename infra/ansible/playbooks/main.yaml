@@ -18,26 +18,23 @@
       debug:
         msg: "EC2 Public IP is {{ ec2_info.instances[0].public_ip_address }}"
 
-
     - name: Ensure EC2 public IP is present
       fail:
         msg: "No EC2 instance public IP found!"
       when: ec2_info.instances[0].public_ip_address is not defined
-
 
     - name: Set dynamic host for CI/MonitoringMonitoring Stack
       add_host:
         name: ci_monitoring_stack_node
         ansible_host: "{{ ec2_info.instances[0].public_ip_address }}"
         ansible_user: ubuntu
-        ansible_ssh_private_key_file: ~/.ssh/jenkins-key.pem
+        ansible_ssh_private_key_file: ~/.ssh/k4scloud-key.pem
         groups: ci_monitoring_nodes
 
     - name: Set EC2 IP fact
       set_fact:
         ci_ec2_public_ip: "{{ ec2_info.instances[0].public_ip_address }}"
 
-
-
+- import_playbook: setup-prereqs.yaml
 - import_playbook: setup-ci.yaml
 - import_playbook: setup-monitoring.yaml

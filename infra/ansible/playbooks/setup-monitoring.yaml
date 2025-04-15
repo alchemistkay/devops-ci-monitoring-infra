@@ -38,5 +38,4 @@
   become: true
   roles:
     - role: monitoring_stack
-      vars:
-        ci_ec2_public_ip: "{{ ci_ec2_public_ip }}"
+  

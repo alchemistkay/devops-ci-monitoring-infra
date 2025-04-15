@@ -1,4 +1,4 @@
-name: "Provision Jenkins with Ansible"
+name: "Provision CI/Monitoring Stack with Ansible"
 
 on:
   workflow_dispatch:
@@ -36,4 +36,5 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Run Ansible Playbook to Install Jenkins
-        run: ansible-playbook infra/ansible/playbooks/main.yaml
+        working-directory: infra/ansible
+        run: ansible-playbook playbooks/main.yaml
