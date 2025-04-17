@@ -17,13 +17,9 @@ unclassified:
     url: "http://localhost:{{ jenkins_port }}"
 
   prometheusConfiguration:
-    useAuthenticatedEndpoint: false
     collectDiskUsage: true
     jobAttributeName: "job"
-    folderAttributeName: "folder"
-    computerAttributeName: "node"
-    includeBuildMetrics: true
-    includeTestMetrics: true
+    useAuthenticatedEndpoint: false
 
 tool:
   git:

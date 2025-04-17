@@ -1,7 +1,7 @@
-- name: Fail if ec2 IP is not provided
-  fail:
-    msg: "ci_ec2_public_ip must be set to configure Jenkins Prometheus target."
-  when: ci_ec2_public_ip is not defined
+# - name: Fail if ec2 IP is not provided
+#   fail:
+#     msg: "ci_ec2_public_ip must be set to configure Jenkins Prometheus target."
+#   when: ci_ec2_public_ip is not defined
 
 - name: Create Prometheus configuration
   template:

@@ -1,4 +1,4 @@
-name: "CI/Monitoring Config"
+name: "CI/Monitoring Stack"
 
 on:
   workflow_dispatch:
@@ -35,6 +35,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Run Ansible Playbook to Install Jenkins
+      - name: Run Ansible Playbook to Configure CI stack
         working-directory: infra/ansible
         run: ansible-playbook playbooks/main.yaml
