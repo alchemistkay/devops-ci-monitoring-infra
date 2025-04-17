@@ -1,4 +1,4 @@
-name: "Provision CI/Monitoring Stack with Ansible"
+name: "CI/Monitoring Confg"
 
 on:
   workflow_dispatch:
