@@ -10,3 +10,4 @@ hashicorp-vault-plugin
 sonar
 prometheus
 configuration-as-code
+sse-gateway
