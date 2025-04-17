@@ -9,10 +9,10 @@ services:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
-      {% comment %} - /opt/ci/jenkins/casc_configs:/var/jenkins_home/casc_configs   {% endcomment %}
+      # - /opt/ci/jenkins/casc_configs:/var/jenkins_home/casc_configs  
     environment:
-      {% comment %} JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
-      CASC_JENKINS_CONFIG: /var/jenkins_home/casc_configs/jenkins.yaml {% endcomment %}
+      # JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+      # CASC_JENKINS_CONFIG: /var/jenkins_home/casc_configs/jenkins.yaml 
     restart: unless-stopped
 
   postgres:
