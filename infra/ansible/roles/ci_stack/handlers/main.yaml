@@ -5,7 +5,7 @@
     state: present
     recreate: always
 
-- name: Cleanup CI stack [containers, volumes, images]
+- name: Cleanup CI stack
   community.docker.docker_compose_v2:
     project_src: /opt/ci
     state: absent

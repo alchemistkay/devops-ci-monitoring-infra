@@ -1,15 +1,31 @@
 jenkins:
   systemMessage: "Jenkins provisioned via JCasC"
   numExecutors: 2
+  
+  # Security Realm for user authentication
   securityRealm:
     local:
       allowsSignup: false
       users:
         - id: {{ jenkins_admin_user }}
           password: {{ jenkins_admin_password }}
+
+        - id: "developer"
+          password: {{ jenkins_developer_password }}
+  
+  # Authorization Strategy        
   authorizationStrategy:
-    loggedInUsersCanDoAnything:
-      allowAnonymousRead: false
+    projectMatrix:
+      entries:
+        - user:
+            name: admin
+            permissions:
+              - Overall/Administer
+        - user:
+            name: developer
+            permissions:
+              - Overall/Read
+              - Job/Build
 
 unclassified:
   location:
@@ -26,17 +42,3 @@ tool:
     installations:
       - name: "Default"
         home: "/usr/bin/git"
-
-plugins:
-  required:
-    - name: git
-    - name: github
-    - name: workflow-aggregator
-    - name: pipeline-stage-view
-    - name: blueocean
-    - name: docker-plugin
-    - name: docker-workflow
-    - name: credentials-binding
-    - name: hashicorp-vault-plugin
-    - name: sonar
-    - name: prometheus

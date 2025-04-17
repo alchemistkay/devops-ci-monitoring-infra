@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  configure-jenkins:
+  ci-monitoring-stack:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: eu-west-2  # Change if needed

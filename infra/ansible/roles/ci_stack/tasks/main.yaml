@@ -36,14 +36,6 @@
     src: plugins.txt
     dest: /opt/ci/jenkins/plugins.txt
 
-- name: Build custom Jenkins image
-  community.docker.docker_image:
-    name: custom-jenkins
-    source: build
-    build:
-      path: /opt/ci/jenkins
-    tag: latest
-
 - name: Create JCasC config directory
   file:
     path: /opt/ci/jenkins/casc_configs
@@ -56,6 +48,14 @@
     dest: /opt/ci/jenkins/casc_configs/jenkins.yaml
     mode: '0644'
   # notify: Restart CI stack
+
+- name: Build custom Jenkins image
+  community.docker.docker_image:
+    name: custom-jenkins
+    source: build
+    build:
+      path: /opt/ci/jenkins
+    tag: latest
 
 - name: Start CI containers with Docker Compose 
   community.docker.docker_compose_v2:
