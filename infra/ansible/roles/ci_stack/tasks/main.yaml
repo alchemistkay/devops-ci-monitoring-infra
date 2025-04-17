@@ -46,9 +46,10 @@
 
 - name: Build custom Jenkins image
   community.docker.docker_image:
+    name: custom-jenkins
+    source: build
     build:
       path: /opt/ci/jenkins
-    name: custom-jenkins
     tag: latest
 
 - name: Create JCasC config directory
