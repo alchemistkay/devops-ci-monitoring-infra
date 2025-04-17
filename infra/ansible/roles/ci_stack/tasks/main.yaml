@@ -33,25 +33,23 @@
   file:
     path: /opt/ci/jenkins
     state: directory
-    recurse: true
+
+- name: Copy Dockerfile
+  template:
+    src: Dockerfile
+    dest: /opt/ci/jenkins/Dockerfile
 
 - name: Copy plugins.txt
   copy:
     src: plugins.txt
     dest: /opt/ci/jenkins/plugins.txt
 
-- name: Copy Dockerfile template
-  template:
-    src: Dockerfile.j2
-    dest: /opt/ci/jenkins/Dockerfile
-
 - name: Build custom Jenkins image
   community.docker.docker_image:
-    name: custom-jenkins
-    tag: latest
     build:
       path: /opt/ci/jenkins
-
+    name: custom-jenkins
+    tag: latest
 
 - name: Create JCasC config directory
   file:
