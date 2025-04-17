@@ -1,4 +1,4 @@
-name: "CI/Monitoring Confg"
+name: "CI/Monitoring Config"
 
 on:
   workflow_dispatch:
