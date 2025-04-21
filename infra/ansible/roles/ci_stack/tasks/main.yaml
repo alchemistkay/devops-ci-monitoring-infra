@@ -63,4 +63,22 @@
     state: present
     recreate: always
 
+# - name: Wait for Jenkins container to be healthy
+#   community.docker.docker_container_info:
+#     name: jenkins
+#   register: jenkins_info
+#   until: jenkins_info.container.State.Health.Status == "healthy"
+#   retries: 10
+#   delay: 5
+#   when: jenkins_info.container.State.Health is defined
+
+# - name: Get Jenkins default admin password from container
+#   command: docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+#   register: jenkins_password
+#   changed_when: false
+
+# - name: Show Jenkins default password
+#   debug:
+#     msg: "Jenkins initial admin password is: {{ jenkins_password.stdout }}"
+
 

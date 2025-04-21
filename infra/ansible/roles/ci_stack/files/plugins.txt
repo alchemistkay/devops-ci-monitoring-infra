@@ -10,3 +10,4 @@ sonar-quality-gates:352.vdcdb_d7994fb_6
 prometheus:819.v50953a_c560dd
 configuration-as-code:1958.vddc0d369b_e16
 sse-gateway:1.28
+matrix-auth:3.2.6
