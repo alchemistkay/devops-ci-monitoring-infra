@@ -24,8 +24,8 @@ This project demonstrates end-to-end DevOps infrastructure provisioning and CI/C
   - Deploys CI stack (Jenkins, SonarQube, Trivy)
   - Deploys Monitoring stack (Prometheus, Grafana)
 - **CI/CD Pipelines**: [GitHub Actions](https://github.com/features/actions)
-  - `tf-plan`: Runs on pull request to generate infrastructure plan
-  - `tf-apply`: Runs on merge to apply infrastructure changes
+  - `terraform-plan`: Runs on pull request to generate infrastructure plan
+  - `terraform-apply`: Runs on merge to apply infrastructure changes
   - `ansible-deploy`: Manual workflow to configure instances with Ansible
 - **Orchestration**: Docker Compose
 - **Monitoring Stack**:
@@ -37,6 +37,7 @@ This project demonstrates end-to-end DevOps infrastructure provisioning and CI/C
 
 ## 📁 Project Structure
 
+```bash
 infra/
 ├── 📦 ansible/
 │   ├── ⚙️ ansible.cfg
@@ -87,6 +88,8 @@ infra/
             ├── 🌿 main.tf
             ├── 📤 outputs.tf
             └── 🧮 variables.tf
+
+```
 
 ## 📌 Highlights
 
