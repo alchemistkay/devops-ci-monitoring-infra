@@ -1,8 +1,8 @@
-# 🚀 CI/CD Infrastructure with Monitoring on AWS using Terraform, Ansible & GitHub Actions
+# CI/CD Infrastructure with Monitoring on AWS using Terraform, Ansible & GitHub Actions
 
-![CI](https://img.shields.io/github/actions/workflow/status/your-username/your-repo/tf-plan.yaml?label=Terraform%20Plan&style=for-the-badge)
-![CI](https://img.shields.io/github/actions/workflow/status/your-username/your-repo/tf-apply.yaml?label=Terraform%20Apply&style=for-the-badge)
-![CI](https://img.shields.io/github/actions/workflow/status/your-username/your-repo/ansible-deploy.yaml?label=Ansible%20Provisioning&style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/alchemistkay/devops-ci-monitoring-infra/terraform-plan.yaml?label=Terraform%20Plan&style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/alchemistkay/devops-ci-monitoring-infra/terraform-apply.yaml?label=Terraform%20Apply&style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/alchemistkay/devops-ci-monitoring-infra/ansible-deploy.yaml?label=Ansible%20Provisioning&style=for-the-badge)
 ![AWS](https://img.shields.io/badge/AWS-EC2%20%7C%20VPC%20%7C%20SG-orange?style=for-the-badge)
 ![Infrastructure as Code](https://img.shields.io/badge/IaC-Terraform%20%7C%20Ansible-blueviolet?style=for-the-badge)
 
@@ -38,70 +38,71 @@ This project demonstrates end-to-end DevOps infrastructure provisioning and CI/C
 ## 📁 Project Structure
 
 ```bash
-infra/
-├── 📦 ansible/
-│   ├── ⚙️ ansible.cfg
-│   ├── 📜 playbooks/
-│   │   ├── 🚀 main.yaml
-│   │   ├── 🧱 setup-ci.yaml
-│   │   ├── 📊 setup-monitoring.yaml
-│   │   └── 📦 setup-prereqs.yaml
-│   └── 📂 roles/
-│       ├── 🧰 ci_stack/
-│       │   ├── 📁 files/
+
+📦 infra
+├── 📂 ansible
+│   ├── 📄 ansible.cfg
+│   ├── 📂 playbooks
+│   │   ├── 📄 main.yaml
+│   │   ├── 📄 setup-ci.yaml
+│   │   ├── 📄 setup-monitoring.yaml
+│   │   └── 📄 setup-prereqs.yaml
+│   └── 📂 roles
+│       ├── 📂 ci_stack
+│       │   ├── 📂 files
 │       │   │   └── 📄 plugins.txt
-│       │   ├── 🔧 handlers/
-│       │   │   └── ⚙️ main.yaml
-│       │   ├── 🛠️ tasks/
-│       │   │   └── 🔨 main.yaml
-│       │   ├── 🧩 templates/
+│       │   ├── 📂 handlers
+│       │   │   └── 📄 main.yaml
+│       │   ├── 📂 tasks
+│       │   │   └── 📄 main.yaml
+│       │   ├── 📂 templates
 │       │   │   ├── 🐳 Dockerfile
 │       │   │   ├── 🐙 docker-compose.yaml.j2
-│       │   │   ├── 🧾 jenkins.yaml.j2
+│       │   │   ├── 📄 jenkins.yaml.j2
 │       │   │   └── 🌐 nginx.conf.j2
-│       │   └── 🧮 vars/
-│       │       └── 📊 main.yaml
-│       └── 📊 monitoring_stack/
-│           ├── 🔧 handlers/
-│           │   └── ⚙️ main.yaml
-│           ├── 🛠️ tasks/
-│           │   └── 🔨 main.yaml
-│           ├── 🧩 templates/
-│           │   ├── 🚨 alertmanager.yaml.j2
+│       │   └── 📂 vars
+│       │       └── 📄 main.yaml
+│       └── 📂 monitoring_stack
+│           ├── 📂 handlers
+│           │   └── 📄 main.yaml
+│           ├── 📂 tasks
+│           │   └── 📄 main.yaml
+│           ├── 📂 templates
+│           │   ├── 📄 alertmanager.yaml.j2
 │           │   ├── 🐙 docker-compose.yaml.j2
-│           │   └── 📈 prometheus.yaml.j2
-│           └── 🧮 vars/
-│               └── 📊 main.yaml
-└── 🌍 terraform/
-    ├── 🧭 backend.tf
-    ├── 🌿 main.tf
-    ├── 📤 outputs.tf
-    ├── 🤝 provider.tf
-    ├── 📦 terraform.tfvars
-    ├── 🧮 variables.tf
-    └── 📦 modules/
-        ├── 🖥️ compute/
-        │   ├── 🌿 main.tf
-        │   ├── 📤 outputs.tf
-        │   └── 🧮 variables.tf
-        └── 🌐 network/
-            ├── 🌿 main.tf
-            ├── 📤 outputs.tf
-            └── 🧮 variables.tf
+│           │   └── 📄 prometheus.yaml.j2
+│           └── 📂 vars
+│               └── 📄 main.yaml
+└── 📂 terraform
+    ├── 📄 backend.tf
+    ├── 📄 main.tf
+    ├── 📂 modules
+    │   ├── 📂 compute
+    │   │   ├── 📄 main.tf
+    │   │   ├── 📄 outputs.tf
+    │   │   └── 📄 variables.tf
+    │   └── 📂 network
+    │       ├── 📄 main.tf
+    │       ├── 📄 outputs.tf
+    │       └── 📄 variables.tf
+    ├── 📄 outputs.tf
+    ├── 📄 provider.tf
+    ├── 📄 terraform.tfvars
+    └── 📄 variables.tf
 
 ```
 
 ## 📌 Highlights
 
-- 🔐 **Infrastructure-as-Code** with remote state stored in **Terraform Cloud**
-- 🧩 Jenkins pre-installed plugins via `plugins.txt`
-- ⚙️ Jenkins configuration as code using **JCasC** (`jenkins.yaml`)
-- 📦 Modular stack orchestration using **Docker Compose**
-- 📈 Full monitoring setup with **Prometheus** and **Grafana**
-- 🧪 Integrated **Trivy** for container vulnerability scanning
-- ✅ Continuous validation with **GitHub Actions** for pull requests and merges
+- **Infrastructure-as-Code** with remote state stored in **Terraform Cloud**
+- Jenkins pre-installed plugins via `plugins.txt`
+- Jenkins configuration as code using **JCasC** (`jenkins.yaml`)
+- Modular stack orchestration using **Docker Compose**
+- Full monitoring setup with **Prometheus** and **Grafana**
+- Integrated **Trivy** for container vulnerability scanning
+- Continuous validation with **GitHub Actions** for pull requests and merges
 
-### 📦 Jenkins Configuration-as-Code (JCasC)
+### Jenkins Configuration-as-Code (JCasC)
 
 - Admin user and plugins are provisioned during image build
 - Configuration loaded via mounted YAML in `/opt/ci/jenkins/casc_configs/`
@@ -124,11 +125,11 @@ terraform/terraform.tfvars
 ```
 
 ### 3. GitHub Actions Workflow
-🛠️ Pull Request → `terraform-plan.yaml` runs for validation
+ Pull Request → `terraform-plan.yaml` runs for validation
 
-✅ Merge to main → `terraform-apply.yaml` provisions the infrastructure
+ Merge to main → `terraform-apply.yaml` provisions the infrastructure
 
-🚀 Manual Trigger → `configure-infra.yaml` configures the EC2 instance with CI & Monitoring stacks
+ Manual Trigger → `ansible-deploy.yaml` configures the EC2 instance with CI & Monitoring stacks
 
 ---
 
