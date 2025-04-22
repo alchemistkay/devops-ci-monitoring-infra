@@ -1,4 +1,4 @@
-# 🚀 CI/CD Infrastructure with Monitoring on AWS using Terraform, Ansible & GitHub Actions
+# CI/CD Infrastructure with Monitoring on AWS using Terraform, Ansible & GitHub Actions
 
 ![CI](https://img.shields.io/github/actions/workflow/status/alchemistkay/devops-ci-monitoring-infra/terraform-plan.yaml?label=Terraform%20Plan&style=for-the-badge)
 ![CI](https://img.shields.io/github/actions/workflow/status/alchemistkay/devops-ci-monitoring-infra/terraform-apply.yaml?label=Terraform%20Apply&style=for-the-badge)
@@ -94,15 +94,15 @@ This project demonstrates end-to-end DevOps infrastructure provisioning and CI/C
 
 ## 📌 Highlights
 
-- 🔐 **Infrastructure-as-Code** with remote state stored in **Terraform Cloud**
-- 🧩 Jenkins pre-installed plugins via `plugins.txt`
-- ⚙️ Jenkins configuration as code using **JCasC** (`jenkins.yaml`)
-- 📦 Modular stack orchestration using **Docker Compose**
-- 📈 Full monitoring setup with **Prometheus** and **Grafana**
-- 🧪 Integrated **Trivy** for container vulnerability scanning
-- ✅ Continuous validation with **GitHub Actions** for pull requests and merges
+- **Infrastructure-as-Code** with remote state stored in **Terraform Cloud**
+- Jenkins pre-installed plugins via `plugins.txt`
+- Jenkins configuration as code using **JCasC** (`jenkins.yaml`)
+- Modular stack orchestration using **Docker Compose**
+- Full monitoring setup with **Prometheus** and **Grafana**
+- Integrated **Trivy** for container vulnerability scanning
+- Continuous validation with **GitHub Actions** for pull requests and merges
 
-### 📦 Jenkins Configuration-as-Code (JCasC)
+### Jenkins Configuration-as-Code (JCasC)
 
 - Admin user and plugins are provisioned during image build
 - Configuration loaded via mounted YAML in `/opt/ci/jenkins/casc_configs/`
@@ -125,11 +125,11 @@ terraform/terraform.tfvars
 ```
 
 ### 3. GitHub Actions Workflow
-🛠️ Pull Request → `terraform-plan.yaml` runs for validation
+ Pull Request → `terraform-plan.yaml` runs for validation
 
-✅ Merge to main → `terraform-apply.yaml` provisions the infrastructure
+ Merge to main → `terraform-apply.yaml` provisions the infrastructure
 
-🚀 Manual Trigger → `ansible-deploy.yaml` configures the EC2 instance with CI & Monitoring stacks
+ Manual Trigger → `ansible-deploy.yaml` configures the EC2 instance with CI & Monitoring stacks
 
 ---
 
