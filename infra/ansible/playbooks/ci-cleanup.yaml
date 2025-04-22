@@ -1,4 +1,3 @@
----
 - name: Clean up CI stack
   hosts: ci_monitoring_nodes
   become: true

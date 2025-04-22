@@ -2,6 +2,20 @@
 #   fail:
 #     msg: "ci_ec2_public_ip must be set to configure Jenkins Prometheus target."
 #   when: ci_ec2_public_ip is not defined
+- name: Create monitoring directory
+  file:
+    path: /opt/monitoring
+    state: directory
+
+- name: Create prometheus config directory
+  file:
+    path: /opt/monitoring/prometheus
+    state: directory
+
+- name: Create alertmanager config directory
+  file:
+    path: /opt/monitoring/alertmanager
+    state: directory
 
 - name: Create Prometheus configuration
   template:
@@ -15,12 +29,12 @@
     src: alertmanager.yaml.j2
     dest: /opt/monitoring/alertmanager/alertmanager.yaml
 
-- name: Deploy monitoring stack with Docker Compose
+- name: Copy docker-compose file
   template:
     src: docker-compose.yaml.j2
     dest: /opt/monitoring/docker-compose.yaml
 
-- name: Launch monitoring stack
+- name: Deploy monitoring stack with Docker Compose
   community.docker.docker_compose_v2:
     project_src: /opt/monitoring
     state: present
