@@ -23,7 +23,7 @@
         msg: "No EC2 instance public IP found!"
       when: ec2_info.instances[0].public_ip_address is not defined
 
-    - name: Set dynamic host for CI/MonitoringMonitoring Stack
+    - name: Set dynamic host for Infra Stack
       add_host:
         name: ci_monitoring_stack_node
         ansible_host: "{{ ec2_info.instances[0].public_ip_address }}"
@@ -35,7 +35,7 @@
       set_fact:
         ci_ec2_public_ip: "{{ ec2_info.instances[0].public_ip_address }}"
 
-# - import_playbook: ci-cleanup.yaml
+
 - import_playbook: setup-prereqs.yaml
 - import_playbook: setup-ci.yaml
 - import_playbook: setup-monitoring.yaml

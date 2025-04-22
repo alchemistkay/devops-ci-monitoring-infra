@@ -12,7 +12,7 @@ env:
   CONFIG_DIRECTORY: "./infra/terraform"
 
 jobs:
-  plan:
+  terraform-plan:
     name: "Terraform Plan"
     runs-on: ubuntu-latest
     

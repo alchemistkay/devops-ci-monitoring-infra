@@ -1,6 +1,0 @@
-- name: Clean up CI stack
-  hosts: ci_monitoring_nodes
-  become: true
-  roles:
-    - role: ci_stack
-      tasks_from: cleanup

@@ -1,8 +1,0 @@
-# roles/ci_stack/tasks/cleanup.yml
-- name: Trigger cleanup
-  debug:
-    msg: "Triggering cleanup..."
-  notify: Cleanup CI stack
-
-- name: Flush handlers now
-  meta: flush_handlers

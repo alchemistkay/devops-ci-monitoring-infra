@@ -1,10 +1,10 @@
-name: "CI/Monitoring Stack"
+name: "Configure Infra"
 
 on:
   workflow_dispatch:
 
 jobs:
-  ci-monitoring-stack:
+  configure-infra:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: eu-west-2  # Change if needed
@@ -35,6 +35,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Run Ansible Playbook to Configure CI stack
+      - name: Run Ansible Playbook to Configure Infra
         working-directory: infra/ansible
         run: ansible-playbook playbooks/main.yaml
