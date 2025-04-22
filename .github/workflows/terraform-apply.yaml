@@ -15,7 +15,7 @@ env:
 
 
 jobs:
-  terraform:
+  terraform-apply:
     name: "Terraform Apply"
     runs-on: ubuntu-latest
     permissions: # granular permissions

@@ -1,0 +1,15 @@
+- name: Cleanup CI stack
+  community.docker.docker_compose_v2:
+    project_src: /opt/ci
+    state: absent
+    remove_orphans: true
+    rmi: all                # Also removes images
+    remove_volumes: true    # Optional: remove named volumes
+
+- name: Cleanup Monitoring stack
+  community.docker.docker_compose_v2:
+    project_src: /opt/monitoring
+    state: absent
+    remove_orphans: true
+    rmi: all                # Also removes images
+    remove_volumes: true    # Optional: remove named volumes

@@ -1,0 +1,5 @@
+- name: Clean up Infra
+  hosts: ci_monitoring_nodes
+  become: true
+  roles:
+    - role: clean_infra
