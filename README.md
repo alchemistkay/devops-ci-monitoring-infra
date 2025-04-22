@@ -38,56 +38,57 @@ This project demonstrates end-to-end DevOps infrastructure provisioning and CI/C
 ## 📁 Project Structure
 
 ```bash
-infra/
-├── 📦 ansible/
-│   ├── ⚙️ ansible.cfg
-│   ├── 📜 playbooks/
-│   │   ├── 🚀 main.yaml
-│   │   ├── 🧱 setup-ci.yaml
-│   │   ├── 📊 setup-monitoring.yaml
-│   │   └── 📦 setup-prereqs.yaml
-│   └── 📂 roles/
-│       ├── 🧰 ci_stack/
-│       │   ├── 📁 files/
+
+📦 infra
+├── 📂 ansible
+│   ├── 📄 ansible.cfg
+│   ├── 📂 playbooks
+│   │   ├── 📄 main.yaml
+│   │   ├── 📄 setup-ci.yaml
+│   │   ├── 📄 setup-monitoring.yaml
+│   │   └── 📄 setup-prereqs.yaml
+│   └── 📂 roles
+│       ├── 📂 ci_stack
+│       │   ├── 📂 files
 │       │   │   └── 📄 plugins.txt
-│       │   ├── 🔧 handlers/
-│       │   │   └── ⚙️ main.yaml
-│       │   ├── 🛠️ tasks/
-│       │   │   └── 🔨 main.yaml
-│       │   ├── 🧩 templates/
+│       │   ├── 📂 handlers
+│       │   │   └── 📄 main.yaml
+│       │   ├── 📂 tasks
+│       │   │   └── 📄 main.yaml
+│       │   ├── 📂 templates
 │       │   │   ├── 🐳 Dockerfile
 │       │   │   ├── 🐙 docker-compose.yaml.j2
-│       │   │   ├── 🧾 jenkins.yaml.j2
+│       │   │   ├── 📄 jenkins.yaml.j2
 │       │   │   └── 🌐 nginx.conf.j2
-│       │   └── 🧮 vars/
-│       │       └── 📊 main.yaml
-│       └── 📊 monitoring_stack/
-│           ├── 🔧 handlers/
-│           │   └── ⚙️ main.yaml
-│           ├── 🛠️ tasks/
-│           │   └── 🔨 main.yaml
-│           ├── 🧩 templates/
-│           │   ├── 🚨 alertmanager.yaml.j2
+│       │   └── 📂 vars
+│       │       └── 📄 main.yaml
+│       └── 📂 monitoring_stack
+│           ├── 📂 handlers
+│           │   └── 📄 main.yaml
+│           ├── 📂 tasks
+│           │   └── 📄 main.yaml
+│           ├── 📂 templates
+│           │   ├── 📄 alertmanager.yaml.j2
 │           │   ├── 🐙 docker-compose.yaml.j2
-│           │   └── 📈 prometheus.yaml.j2
-│           └── 🧮 vars/
-│               └── 📊 main.yaml
-└── 🌍 terraform/
-    ├── 🧭 backend.tf
-    ├── 🌿 main.tf
-    ├── 📤 outputs.tf
-    ├── 🤝 provider.tf
-    ├── 📦 terraform.tfvars
-    ├── 🧮 variables.tf
-    └── 📦 modules/
-        ├── 🖥️ compute/
-        │   ├── 🌿 main.tf
-        │   ├── 📤 outputs.tf
-        │   └── 🧮 variables.tf
-        └── 🌐 network/
-            ├── 🌿 main.tf
-            ├── 📤 outputs.tf
-            └── 🧮 variables.tf
+│           │   └── 📄 prometheus.yaml.j2
+│           └── 📂 vars
+│               └── 📄 main.yaml
+└── 📂 terraform
+    ├── 📄 backend.tf
+    ├── 📄 main.tf
+    ├── 📂 modules
+    │   ├── 📂 compute
+    │   │   ├── 📄 main.tf
+    │   │   ├── 📄 outputs.tf
+    │   │   └── 📄 variables.tf
+    │   └── 📂 network
+    │       ├── 📄 main.tf
+    │       ├── 📄 outputs.tf
+    │       └── 📄 variables.tf
+    ├── 📄 outputs.tf
+    ├── 📄 provider.tf
+    ├── 📄 terraform.tfvars
+    └── 📄 variables.tf
 
 ```
 
