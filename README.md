@@ -128,7 +128,7 @@ terraform/terraform.tfvars
 
 ✅ Merge to main → `terraform-apply.yaml` provisions the infrastructure
 
-🚀 Manual Trigger → `configure-infra.yaml` configures the EC2 instance with CI & Monitoring stacks
+🚀 Manual Trigger → `ansible-deploy.yaml` configures the EC2 instance with CI & Monitoring stacks
 
 ---
 
