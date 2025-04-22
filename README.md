@@ -1,8 +1,8 @@
 # 🚀 CI/CD Infrastructure with Monitoring on AWS using Terraform, Ansible & GitHub Actions
 
-![CI](https://img.shields.io/github/actions/workflow/status/your-username/your-repo/tf-plan.yaml?label=Terraform%20Plan&style=for-the-badge)
-![CI](https://img.shields.io/github/actions/workflow/status/your-username/your-repo/tf-apply.yaml?label=Terraform%20Apply&style=for-the-badge)
-![CI](https://img.shields.io/github/actions/workflow/status/your-username/your-repo/ansible-deploy.yaml?label=Ansible%20Provisioning&style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/alchemistkay/devops-ci-monitoring-infra.git/terraform-plan.yaml?label=Terraform%20Plan&style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/alchemistkay/devops-ci-monitoring-infra/terraform-apply.yaml?label=Terraform%20Apply&style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/alchemistkay/devops-ci-monitoring-infra/ansible-deploy.yaml?label=Ansible%20Provisioning&style=for-the-badge)
 ![AWS](https://img.shields.io/badge/AWS-EC2%20%7C%20VPC%20%7C%20SG-orange?style=for-the-badge)
 ![Infrastructure as Code](https://img.shields.io/badge/IaC-Terraform%20%7C%20Ansible-blueviolet?style=for-the-badge)
 
