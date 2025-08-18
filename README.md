@@ -8,13 +8,13 @@
 
 ---
 
-## 🔍 Project Spotlight
+## Project Spotlight
 
 This project demonstrates end-to-end DevOps infrastructure provisioning and CI/CD pipeline configuration using Terraform and Ansible, with GitHub Actions for automation. The infrastructure deploys a Jenkins-based CI stack along with SonarQube, Trivy, and a full monitoring suite using Prometheus and Grafana—all orchestrated on AWS EC2 and provisioned via Docker Compose.
 
 ---
 
-## 🏗 Infrastructure Overview
+## Infrastructure Overview
 
 - **Provisioning Tool**: [Terraform](https://www.terraform.io/)
   - Creates AWS EC2, VPC, Subnets, Security Groups
@@ -35,7 +35,7 @@ This project demonstrates end-to-end DevOps infrastructure provisioning and CI/C
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```bash
 
@@ -92,7 +92,7 @@ This project demonstrates end-to-end DevOps infrastructure provisioning and CI/C
 
 ```
 
-## 📌 Highlights
+## Highlights
 
 - **Infrastructure-as-Code** with remote state stored in **Terraform Cloud**
 - Jenkins pre-installed plugins via `plugins.txt`
@@ -109,7 +109,7 @@ This project demonstrates end-to-end DevOps infrastructure provisioning and CI/C
 
 ---
 
-## 🧪 How to Run
+## How to Run
 
 ### 1. Clone the Repo
 
@@ -133,7 +133,7 @@ terraform/terraform.tfvars
 
 ---
 
-## 🚀 How to Use (Locally)
+## How to Use (Locally)
 > Requires: AWS credentials, Terraform installed, Ansible installed
 
 ```bash
@@ -149,7 +149,7 @@ ansible-playbook -i inventory/hosts.ini playbooks/main.yaml
 
 ---
 
-## 🧠 Learning Highlights
+## Learning Highlights
 
 - Real-world practice with IaC (Terraform) and CM (Ansible)
 
